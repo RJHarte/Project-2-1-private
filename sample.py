@@ -1,10 +1,18 @@
-import tkinter as tk                # python 3
-from tkinter import font  as tkfont # python 3
+import tkinter as tk
+from tkinter import font  as tkfont
+from tkinter import ttk
+import matplotlib
+matplotlib.use("TkAgg")
 
-class SampleApp(tk.Tk):
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.figure import Figure
+
+class Centrale(tk.Tk):
 
     def __init__(self, *args, **kwargs):
+
         tk.Tk.__init__(self, *args, **kwargs)
+        tk.Tk.wm_title(self, "Centrale")
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
@@ -17,7 +25,7 @@ class SampleApp(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne, PageTwo):
+        for F in (StartPage, PageOne, PageTwo, PageThree):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -43,12 +51,15 @@ class StartPage(tk.Frame):
         label = tk.Label(self, text="This is the start page", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
-        button1 = tk.Button(self, text="Go to Page One",
+        button1 = ttk.Button(self, text="Go to Page One",
                             command=lambda: controller.show_frame("PageOne"))
-        button2 = tk.Button(self, text="Go to Page Two",
+        button2 = ttk.Button(self, text="Go to Page Two",
                             command=lambda: controller.show_frame("PageTwo"))
+        button3 = ttk.Button(self, text="Go to Page Three",
+                             command=lambda: controller.show_frame("PageThree"))
         button1.pack()
         button2.pack()
+        button3.pack()
 
 
 class PageOne(tk.Frame):
@@ -56,9 +67,9 @@ class PageOne(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="This is page 1", font=controller.title_font)
+        label = ttk.Label(self, text="This is page 1", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
-        button = tk.Button(self, text="Go to the start page",
+        button = ttk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
         button.pack()
 
@@ -68,13 +79,24 @@ class PageTwo(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="This is page 2", font=controller.title_font)
+        label = ttk.Label(self, text="This is page 2", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
-        button = tk.Button(self, text="Go to the start page",
+        button = ttk.Button(self, text="Go to the start page",
+                           command=lambda: controller.show_frame("StartPage"))
+        button.pack()
+
+class PageThree(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = ttk.Label(self, text="This is page 2", font=controller.title_font)
+        label.pack(side="top", fill="x", pady=10)
+        button = ttk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
         button.pack()
 
 
 if __name__ == "__main__":
-    app = SampleApp()
+    app = Centrale()
     app.mainloop()
